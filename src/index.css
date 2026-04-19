@@ -1,0 +1,43 @@
+.auth-comtainer{
+    background-image: url(./assets/images/bg-auth.jpg);
+    background-position: center center;
+    background-size: cover;
+}
+
+.bg-overlay{
+
+    background: linear-gradient(51.22deg, rgba(55, 140, 47, 0.63) -22.39%, rgba(0, 0, 0, 0.6237) 61.76%);
+}
+.form-control:focus{
+    box-shadow: 0 0 0 0 !important;
+    background-color: transparent !important;
+}
+.main-text-Color{
+    color: rgba(74, 163, 90, 1);
+}
+.main-bg-Color{
+    background-color: rgba(74, 163, 90, 1);
+}
+.auth-btn-hover:hover{
+    /* color:rgba(74, 163, 90, 1) !important ; */
+box-shadow: 1rem 1rem 4rem rgba(0, 0, 0,0.4) !important;
+background-color:rgb(53, 125, 66) !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+
+    -webkit-text-fill-color: #000 !important; /* الكتابة سوداء */
+    caret-color: #000; /* لون المؤشر */
+
+    transition: background-color 9999s ease-in-out 0s;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px rgba(255,255,255,0) inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+
