@@ -16,6 +16,7 @@ import NotFound from "./modules/Shared/components/NotFound/NotFound";
 import CategoriseList from "./modules/categorise/components/CategoriseList/CategoriseList";
 import FavList from "./modules/favourites/componants/FavList/FavList";
 import UserList from "./modules/users/components/UserList/UserList";
+import { HashRouter } from 'react-router-dom';
 
 function App() {
   const routes = createBrowserRouter(
