@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../../../../src/api/axsiosClient";
+import { authApi } from "../../../../api";
+
 
 export default function ResetPass() {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,10 +35,7 @@ export default function ResetPass() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "https://upskilling-egypt.com:3006/api/v1/Users/Reset",
-        data,
-      );
+      const response = await authApi.Reset(data);
       toast.success("Password reset successfully!");
       console.log(data);
       navigate("/login");
@@ -54,7 +54,7 @@ export default function ResetPass() {
           Please Enter Your Otp or Check Your Inbox
         </span>
         <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group mt-3  p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group mt-3  p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -87,7 +87,7 @@ export default function ResetPass() {
               </span>
             )}
           </>
-          <div className="input-group mt-3  p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group mt-3  p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -114,7 +114,7 @@ export default function ResetPass() {
               </span>
             )}
           </>
-          <div className="input-group mt-3  p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group mt-3  p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -160,7 +160,7 @@ export default function ResetPass() {
               </span>
             )}
           </>
-          <div className="input-group mt-3  p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group mt-3  p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -168,7 +168,7 @@ export default function ResetPass() {
               <i className="fa-solid fa-lock text-secondary fs-5 "></i>
             </span>
             <input
-              type={isPasswordVisible ? "text" : "password"}
+              type={isConfirmPasswordVisible ? "text" : "password"}
               className="form-control border border-0 bg-transparent"
               placeholder=" Confirm New Password "
               aria-label="confirmPassword"
@@ -187,10 +187,10 @@ export default function ResetPass() {
             <button
               type="button"
               className="btn border-0 text-secondary"
-              onClick={togglePassword}
+              onClick={toggleConfirmPassword}
             >
               <i
-                className={`fa-solid ${isPasswordVisible ? "fa-eye-slash" : "fa-eye"}`}
+                className={`fa-solid ${isConfirmPasswordVisible ? "fa-eye-slash" : "fa-eye"}`}
               ></i>
             </button>
           </div>

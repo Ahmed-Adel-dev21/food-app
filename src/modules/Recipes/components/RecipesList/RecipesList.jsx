@@ -1,7 +1,16 @@
 import React from 'react'
+import chief from '../../../../assets/images/Recipes.png'
+import Header from '../../../Shared/components/Header/Header'
+
 
 export default function RecipesList() {
   return (
-    <div>RecipesList</div>
+    <>
+    <Header  title={'Recipes '}
+         description={`You can now add your items that any user can order it from  , the Application and you can edit`} 
+         imgUrl={chief}
+         Data={'Items'}
+            />
+    </>
   )
 }

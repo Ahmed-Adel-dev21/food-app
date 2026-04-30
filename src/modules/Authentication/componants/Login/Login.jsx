@@ -3,21 +3,24 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../../../../src/api/axsiosClient"
+import { authApi } from "../../../../api";
 
-export default function Login() {
-    const [isLoading, setIsLoading] = useState(false);
-  
+
+export default function Login({ saveUserData }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   let navigate = useNavigate();
 
   // visibel pass
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-      useState(false);
-  
-    const togglePassword = () => setIsPasswordVisible(!isPasswordVisible);
-    const toggleConfirmPassword = () =>
-      setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
-    // ----- 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+
+  const togglePassword = () => setIsPasswordVisible(!isPasswordVisible);
+  const toggleConfirmPassword = () =>
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  // -----
 
   const {
     register,
@@ -25,23 +28,20 @@ export default function Login() {
     handleSubmit,
     reset,
   } = useForm();
-  const onSubmit = async(data) => {
-        setIsLoading(true);
 
+  const onSubmit = async (data) => {
+    setIsLoading(true);
     try {
-      const response=await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login',data)
-      console.log(response.data.token);
-      localStorage.setItem('token',response.data.token)
-      navigate('/dashboard')
-    reset()
-      
+      const response = await authApi.Login(data) ;
+      localStorage.setItem("token", response.token);
+      saveUserData();
+      navigate("/dashboard");
+      // reset()
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
-      
-    }finally {
+    } finally {
       setIsLoading(false);
     }
-    
   };
   return (
     <>
@@ -51,7 +51,7 @@ export default function Login() {
           Welcome Back! Please enter your details
         </span>
         <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group   p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group   p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -84,7 +84,7 @@ export default function Login() {
               </span>
             )}
           </>
-          <div className="input-group mt-4  p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group mt-4  p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"
@@ -114,7 +114,7 @@ export default function Login() {
               })}
             />
             <button
-              type="button" 
+              type="button"
               className="btn border-0 text-secondary"
               onClick={togglePassword}
             >
@@ -142,7 +142,7 @@ export default function Login() {
               Forgot Password?
             </Link>
           </div>
-          
+
           <button
             type="submit"
             className={`btn auth-btn-hover text-white main-bg-Color w-100 fs-5 my-3 ${isLoading ? "pointer-events-none opacity-75" : ""}`}

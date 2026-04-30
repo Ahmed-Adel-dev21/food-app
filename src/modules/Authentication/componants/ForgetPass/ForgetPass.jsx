@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import api from "../../../../../src/api/axsiosClient";
+import { authApi } from "../../../../api";
 
 export default function ForgetPass() {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +19,7 @@ export default function ForgetPass() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        "https://upskilling-egypt.com:3006/api/v1/Users/Reset/Request",
-        data,
-      );
+      const response = await authApi.ForgetPass(data);
       navigate("/reset-pass");
     } catch (error) {
       console.log(error);
@@ -37,7 +36,7 @@ export default function ForgetPass() {
           link.
         </span>
         <form className="my-3" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group    p-1 shadow-sm rounded-2 bg-secondary bg-opacity-25">
+          <div className="input-group    p-1 shadow-sm rounded-2 custom-input-color">
             <span
               className="input-group-text  bg-transparent border border-1 border-secondary border-start-0 border-bottom-0 border-top-0"
               id="basic-addon1"

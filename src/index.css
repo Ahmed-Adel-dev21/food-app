@@ -23,6 +23,9 @@
 box-shadow: 1rem 1rem 4rem rgba(0, 0, 0,0.4) !important;
 background-color:rgb(53, 125, 66) !important;
 }
+.custom-input-color{
+    background-color: rgba(245, 245, 245, 1) !important;
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -41,3 +44,24 @@ input:-webkit-autofill {
     -webkit-text-fill-color: #000 !important;
 }
 
+.bg-header{
+    background-image: url(./assets/images/header.jpeg);
+    background-position: center center;
+    background-size: cover;
+}
+.sidebar-container .ps-sidebar-container{
+    background-color: rgba(31, 38, 62, 1) !important;
+    height: 100vh;
+    border-radius: 0px 100px 0 0; 
+    border: 0px;
+    transition: all 1.3s;
+}
+
+.sidebar-container .ps-menu-button:hover{
+        background-color: rgba(0, 146, 77, 0.1) !important;
+        border-left: 3px solid rgba(0, 146, 77, 1) !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

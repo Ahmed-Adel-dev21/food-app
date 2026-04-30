@@ -7,7 +7,7 @@ export default function AuthLayout() {
     <div className="auth-comtainer">
       <div className="container-fluid bg-overlay">
         <div className="row vh-100 justify-content-center align-items-center">
-          <div className="col-lg-5 col-md-7 bg-white rounded rounded-2 py-4 px-5">
+          <div className="col-lg-6 col-md-9 bg-white rounded rounded-2 py-4 px-5">
             <div className='p-2'>
 
             <div className="logo-container mx-auto w-75">
