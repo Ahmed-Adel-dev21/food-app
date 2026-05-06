@@ -5,8 +5,8 @@ const api = axios.create({
   baseURL: "https://upskilling-egypt.com:3006/api/v1",
   timeout: 5000,
   headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
+    // "Content-Type": "application/json",
+    // Accept: "application/json",
   },
 });
 
@@ -34,12 +34,6 @@ api.interceptors.response.use(
     
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
-
-    //   window.location.href = "/login";
-    //   toast.error(
-    //     "Your session has expired. You have been redirected to the login page.",
-    //   );
-
     }
 
     return Promise.reject(error);

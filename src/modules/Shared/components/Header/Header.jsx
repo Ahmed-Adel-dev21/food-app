@@ -3,7 +3,7 @@ export default function Header({Data,title,description,imgUrl}) {
   return (
     <>
 
-    <div className=" px-4 py-2  text-white rounded rounded-4 bg-header">
+    <div className=" px-4 py-4  text-white rounded rounded-4 bg-header">
       <div className=' container-fluid'>
         <div className="row">
           <div className="col-md-8  d-flex align-items-center">
@@ -21,8 +21,8 @@ export default function Header({Data,title,description,imgUrl}) {
             </p>
             </div>
           </div>
-          <div className="col-md-4 text-end  d-flex justify-content-end">
-            <img className='w-75 ' src={imgUrl} alt="" />
+          <div className="col-md-4 text-end  d-flex justify-content-md-end justify-content-start ">
+            <img className=' w-50 ' src={imgUrl} alt="" />
           </div>
         </div>
 

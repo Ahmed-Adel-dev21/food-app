@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaChevronLeft, FaTimes } from 'react-icons/fa';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
 import { Link, useNavigate } from 'react-router-dom';
 import logoUser from '../../../../assets/images/3.png';
@@ -7,6 +7,7 @@ import logoUser from '../../../../assets/images/3.png';
 
 export default function SideBar() {
 const [collapsed, setCollapsed] = useState(false);
+
 
 const toggelColapsed=()=>{
   setCollapsed(!collapsed)
@@ -20,29 +21,29 @@ const navigate=useNavigate()
   }
   return (
     <>
-    <div className='sidebar-container mt-1'>
-      <Sidebar collapsed={collapsed}>
+    <div className='sidebar-container  d-flex position-sticky vh-100 top-0 '>
+      <Sidebar collapsed={collapsed} className='border border-0'>
         
         <div className='d-flex justify-content-start ms-2 mt-3'>
           <button onClick={toggelColapsed} className=" border-0 fs-4 bg-transparent text-white">
-        {collapsed ? <FaTimes /> : <FaBars />}
-      </button>
+        {collapsed ? <FaBars /> : <FaChevronLeft />}
+          </button>
         </div>
-        <div className='d-flex justify-content-center '>
+        <div className='d-flex justify-content-center  '>
            <img className=' img-fluid ' src={logoUser} alt="logoUser" />
         </div>
         <Menu>
           
-          <MenuItem  className='text-white fs-6 '   icon={<i className="fa-solid fa-house"></i>} component={<Link to="/dashboard" />}> Home </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-users"></i>} component={<Link to="/dashboard/users" />}> Users </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-receipt"></i>} component={<Link to="/dashboard/recipes" />}> Recipes </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-layer-group"></i>} component={<Link to="/dashboard/categories" />}> Categories </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-heart"></i>} component={<Link to="/dashboard/favorites" />}> Favorites </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-unlock-keyhole"></i>} > Change Password </MenuItem>
-          <MenuItem  className='text-white fs-6 '  icon={<i className="fa-solid fa-arrow-right-from-bracket"></i>} > <span className='bg-tr' onClick={logout}> logout</span> </MenuItem>
+          <MenuItem  className='text-white fs-6   '   icon={<i className="fa-solid fa-house"></i>} component={<Link to="/dashboard" />}> Home </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-users"></i>} component={<Link to="/dashboard/users" />}> Users </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-receipt"></i>} component={<Link to="/dashboard/recipes" />}> Recipes </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-layer-group"></i>} component={<Link to="/dashboard/categories" />}> Categories </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-heart"></i>} component={<Link to="/dashboard/favorites" />}> Favorites </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-unlock-keyhole"></i>} > Change Password </MenuItem>
+          <MenuItem  className='text-white fs-6   '  icon={<i className="fa-solid fa-arrow-right-from-bracket"></i>} onClick={logout} > <span className='bg-tr' > logout</span> </MenuItem>
         </Menu>
       
-      </Sidebar>;
+      </Sidebar>
 
     </div>
     </>

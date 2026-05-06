@@ -58,7 +58,10 @@ useEffect(() => {
       },
       {
         path:'dashboard',
-        element:<ProtectedRoute loginData={loginData}><MasterLayout loginData={loginData} /></ProtectedRoute> ,
+        element:
+        <ProtectedRoute loginData={loginData}>
+        <MasterLayout loginData={loginData} />
+         </ProtectedRoute> ,
         errorElement:<NotFound/>,
         children:[
           {index:true,element:<Dashboard loginData={loginData}/>},
