@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../../src/api/axsiosClient";
 import { authApi } from "../../../../api";
+import { Reset } from "../../../../api/modules/auth";
 
 
 export default function ResetPass() {
@@ -35,9 +36,8 @@ export default function ResetPass() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await authApi.Reset(data);
+      const response = await Reset(data);
       toast.success("Password reset successfully!");
-      console.log(data);
       navigate("/login");
       reset();
     } catch (error) {

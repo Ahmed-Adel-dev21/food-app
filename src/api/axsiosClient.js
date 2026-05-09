@@ -6,11 +6,9 @@ const api = axios.create({
   timeout: 5000,
   headers: {
     // "Content-Type": "application/json",
-    // Accept: "application/json",
+    Accept: "application/json",
   },
 });
-
-
 
 api.interceptors.request.use(
   (config) => {
@@ -27,11 +25,9 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-   
-    return response.data;
+    return response;
   },
   (error) => {
-    
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
     }
@@ -39,6 +35,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
 
 export default api;

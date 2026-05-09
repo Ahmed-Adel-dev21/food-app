@@ -1,19 +1,19 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { useForm } from "react-hook-form";
+import { FaCloudUploadAlt, FaFileImage } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAllCategories } from "../../../../api/modules/categories";
-import { getAllTags } from "../../../../api/modules/Tags";
-import LightHeader from "../../../Shared/components/LightHeader/LightHeader";
-import { FaCloudUploadAlt, FaFileImage } from "react-icons/fa";
 import {
   createRecipe,
   updateRecipeById,
 } from "../../../../api/modules/Recipes";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { getAllTags } from "../../../../api/modules/Tags";
+import LightHeader from "../../../Shared/components/LightHeader/LightHeader";
 
 export default function RecipesData() {
   // get categories
@@ -22,7 +22,7 @@ export default function RecipesData() {
     try {
       const response = await getAllCategories();
 
-      const data = response?.data;
+      const data = response?.data?.data;
       setCategories(data);
     } catch (error) {
       toast.error(error.response?.data?.message);
@@ -34,8 +34,8 @@ export default function RecipesData() {
   const getTags = async () => {
     try {
       const response = await getAllTags();
-      // const data = response?.data;
-      setTags(response);
+      const data = response?.data;
+      setTags(data);
     } catch (error) {
       toast.error(error.response?.data?.message);
     }
@@ -95,32 +95,51 @@ export default function RecipesData() {
       setFileName(e.target.files[0].name);
     }
   };
-  
+
   //------ handel update recipe
   const { state } = useLocation();
   const navigate = useNavigate();
   const isEditMode = state?.isUpdate;
 
+  // handle update images
+
+  const baseUrl = "https://upskilling-egypt.com:3006";
+  const saveImage = async (pathImage) => {
+    if (!pathImage) return;
+    try {
+      const response = await axios({
+        url: `${baseUrl}/${pathImage}`,
+        method: "GET",
+        responseType: "blob",
+      });
+      setValue("recipeImage", [response.data]);
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    }
+  };
+
   // useEffect for update
   useEffect(() => {
     if (isEditMode && state?.recipeData && categories.length > 0) {
       const { recipeData } = state;
+      const pathImage = state?.recipeData?.imagePath;
 
       setValue("name", recipeData.name);
       setValue("price", recipeData.price);
       setValue("description", recipeData.description);
       setValue("tagId", recipeData.tag?.id);
       setValue("categoriesIds", String(recipeData.category[0]?.id));
+      saveImage(pathImage);
     }
   }, [isEditMode, state, categories]);
 
-  
   //-----------
 
   useEffect(() => {
     getCategories();
     getTags();
   }, []);
+
   return (
     <>
       <LightHeader Fill={isEditMode ? "Edit " : "Add "} />
@@ -144,7 +163,6 @@ export default function RecipesData() {
                 {...register("tagId", { required: "Tag Id  is required" })}
                 className="fw-semibold "
               >
-                
                 <option value="">Choose Tag...</option>
                 {Tags.map((tag) => (
                   <option key={tag.id} value={tag?.id}>
@@ -214,11 +232,10 @@ export default function RecipesData() {
             {/* show old image */}
             {isEditMode && state?.recipeData?.imagePath && !fileName && (
               <div className="my-3 text-center">
-                <img 
+                <img
                   src={`https://upskilling-egypt.com:3006/${state.recipeData.imagePath}`}
                   alt="recipe"
                   className="update-image"
-                  
                 />
               </div>
             )}

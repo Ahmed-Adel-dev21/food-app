@@ -1,14 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../../src/api/axsiosClient"
 import { authApi } from "../../../../api";
+import { AuthContext } from "../../../../Context/AuthContext";
+import { Spinner } from "react-bootstrap";
+import { Loginnn } from "../../../../api/modules/auth";
 
 
-export default function Login({ saveUserData }) {
+export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
+  const{saveUserData}=useContext(AuthContext);
 
   let navigate = useNavigate();
 
@@ -28,21 +32,24 @@ export default function Login({ saveUserData }) {
     handleSubmit,
     reset,
   } = useForm();
-
-  const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      const response = await authApi.Login(data) ;
-      localStorage.setItem("token", response.token);
-      saveUserData();
+const onSubmit = async (data) => {
+  setIsLoading(true);
+  try {
+    const response = await Loginnn(data); 
+    const token = response.token || response.data?.token;
+    if (token) {
+      localStorage.setItem("token", token); 
+      saveUserData();     
+      toast.success("Login Successful!");
       navigate("/dashboard");
-      // reset()
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong");
-    } finally {
-      setIsLoading(false);
     }
-  };
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login Failed");
+  } finally {
+    setIsLoading(false);
+  }
+};
+  
   return (
     <>
       <div>
@@ -142,19 +149,28 @@ export default function Login({ saveUserData }) {
               Forgot Password?
             </Link>
           </div>
-
           <button
-            type="submit"
-            className={`btn auth-btn-hover text-white main-bg-Color w-100 fs-5 my-3 ${isLoading ? "pointer-events-none opacity-75" : ""}`}
-          >
-            {isLoading ? (
-              <span>
-                <i className="fa-solid fa-spinner fa-spin me-2"></i> Wait...
-              </span>
-            ) : (
-              "Login"
-            )}
-          </button>
+            className={`btn btn-success  w-100 fs-5 my-3 ${isLoading ? "pointer-events-none opacity-75" : ""}`}
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    Wait...
+                  </>
+                ) : 
+                  "Save"
+                }
+              </button>
+
         </form>
       </div>
     </>

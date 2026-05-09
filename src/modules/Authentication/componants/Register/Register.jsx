@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../../src/api/axsiosClient";
 import { authApi } from "../../../../api";
+import { Registerrr } from "../../../../api/modules/auth";
 
 
 export default function Register() {
@@ -35,9 +36,8 @@ export default function Register() {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await authApi.Register(data)
+      const response = await Registerrr(data);
       toast.success("Go to Verify");
-      console.log(response);
       navigate("/verify-account");
     } catch (error) {
       toast.error(error.response?.data?.message);
@@ -117,7 +117,7 @@ export default function Register() {
                       noSpaces: (value) =>
                         !!value.trim() || "Email cannot be empty",
                       validFormat: (value) =>
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|eg)$/i.test(
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|eg|gcervera)$/i.test(
                           value.trim(),
                         ) ||
                         "Invalid format. Example: user@domain.com (only .com, .net, .org, .eg are allowed)",
@@ -308,9 +308,11 @@ export default function Register() {
           >
             Login
           </Link>
+          
           <button
             type="submit"
-            className={`btn auth-btn-hover text-white main-bg-Color w-100 fs-5 mt-4 ${isLoading ? "pointer-events-none opacity-75" : ""}`}
+            disabled={isLoading}
+            className={`btn btn-success  text-white  w-100 fs-5 mt-4 ${isLoading ? "pointer-events-none opacity-75" : ""}`}
           >
             {isLoading ? (
               <span>

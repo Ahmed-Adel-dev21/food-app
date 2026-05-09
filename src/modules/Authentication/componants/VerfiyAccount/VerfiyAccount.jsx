@@ -1,11 +1,8 @@
-import React from 'react'
-import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../../../../src/api/axsiosClient";
-import { authApi } from '../../../../api';
+import { Verify } from '../../../../api/modules/auth';
 
 
 export default function VerfiyAccount() {
@@ -37,7 +34,7 @@ export default function VerfiyAccount() {
   
     setIsLoading(true);
     try {
-      const response = await authApi.Verify(data);
+      const response = await Verify(data);
       toast.success("Now Your acount is Verifed");
       navigate("/login");
 

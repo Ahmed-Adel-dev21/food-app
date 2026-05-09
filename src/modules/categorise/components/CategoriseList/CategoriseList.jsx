@@ -1,32 +1,44 @@
-import React, { useEffect, useState } from "react";
-import chief from "../../../../assets/images/Recipes.png";
-import Header from "../../../Shared/components/Header/Header";
-import { categoriesApi } from "../../../../api";
-import Table from "react-bootstrap/Table";
+import { useEffect, useState } from "react";
+import {
+  ButtonGroup,
+  Dropdown,
+  DropdownButton,
+  Spinner,
+} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { toast } from "react-toastify";
-import { Spinner } from "react-bootstrap";
-import noImageData from "../../../../assets/images/no-data.png";
-import NoData from "../../../Shared/components/NoData/NoData";
-import DeleteConfermation from "../../../Shared/components/DeleteConfermation/DeleteConfermation";
+import Table from "react-bootstrap/Table";
 import { useForm } from "react-hook-form";
-import { getAllCategories, updateCategoriesById } from "../../../../api/modules/categories";
+import { toast } from "react-toastify";
+import { categoriesApi } from "../../../../api";
+import {
+  getAllCategories,
+  updateCategoriesById,
+} from "../../../../api/modules/categories";
+import chief from "../../../../assets/images/Recipes.png";
+import DeleteConfermation from "../../../Shared/components/DeleteConfermation/DeleteConfermation";
+import Header from "../../../Shared/components/Header/Header";
+import NoData from "../../../Shared/components/NoData/NoData";
 
 export default function CategoriseList() {
+  const [isLoading, setIsLoading] = useState(false);
+
   // loding of delete
   const [isDeleting, setIsDeleting] = useState(false);
   // useState for get category
   const [categories, setCategories] = useState([]);
   // get categories
   const getCategories = async () => {
+    setIsLoading(true);
     try {
       const response = await getAllCategories();
 
-      const data = response?.data;
+      const data = response?.data?.data;
       setCategories(data);
     } catch (error) {
       toast.error(error.response?.data?.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   // delet GetCategories by id
@@ -46,7 +58,6 @@ export default function CategoriseList() {
     }
   };
 
-
   // useState use in define category in modal and props
   const [selectedCategory, setSelectedCategory] = useState(null);
   // modale delete
@@ -55,7 +66,7 @@ export default function CategoriseList() {
     setShow(false);
     setSelectedCategory(null);
   };
-// show delete modale
+  // show delete modale
   const handleShow = (category) => {
     setSelectedCategory(category);
     setShow(true);
@@ -71,20 +82,20 @@ export default function CategoriseList() {
   // modal Add
   const [showAdd, setShowAdd] = useState(false);
   const handleShowAdd = () => {
-  setIsEdit(false);
-  setSelectedCategory(null);
-  reset({ name: "" });
-  setShowAdd(true);
-};
+    setIsEdit(false);
+    setSelectedCategory(null);
+    reset({ name: "" });
+    setShowAdd(true);
+  };
   // handel open Edite
   const handleEdit = (category) => {
-  setSelectedCategory(category);
-  setIsEdit(true);
-  setShowAdd(true); 
-  reset({
-    name: category.name,
-  });
-};
+    setSelectedCategory(category);
+    setIsEdit(true);
+    setShowAdd(true);
+    reset({
+      name: category.name,
+    });
+  };
   // ---
   const handleCloseAdd = () => {
     setShowAdd(false);
@@ -104,7 +115,6 @@ export default function CategoriseList() {
     setIsAdding(true);
     try {
       if (isEdit) {
-        
         await updateCategoriesById(selectedCategory.id, data);
         toast.success("Category updated successfully");
       } else {
@@ -120,8 +130,6 @@ export default function CategoriseList() {
       setIsAdding(false);
     }
   };
-
-  
 
   return (
     <>
@@ -163,7 +171,9 @@ export default function CategoriseList() {
       {/* modal add */}
       <Modal centered show={showAdd} onHide={handleCloseAdd}>
         <Modal.Header closeButton>
-          <Modal.Title className="">{isEdit ? "Edit Category" : "Add Category"}</Modal.Title>
+          <Modal.Title className="">
+            {isEdit ? "Edit Category" : "Add Category"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="my-4">
           <form onSubmit={handleSubmit(submitCategory)}>
@@ -223,46 +233,67 @@ export default function CategoriseList() {
       </div>
 
       <div>
-        {categories.length > 0 ? (
-          <Table responsive  hover className="text-center custom-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Creation Date</th>
-                <th>Modification Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {categories.map((category, index) => (
-                <tr key={category?.id}>
-                  <td>{category?.id}</td>
-                  <td>{category?.name}</td>
-                  <td>
-                    {new Date(category?.creationDate).toLocaleDateString()}
-                  </td>
-                  <td>
-                    {new Date(category?.modificationDate).toLocaleDateString()}
-                  </td>
-                  <td>
-                    <i
-                      onClick={() => handleEdit(category)}
-                      className="fa-regular fa-pen-to-square fs-5 text-primary cursor-pointer mx-3"
-                    ></i>
-                    <i
-                      onClick={() => handleShow(category)}
-                      className="fa-regular fa-trash-can fs-5 text-danger cursor-pointer"
-                    ></i>
-                  </td>
+        <div>
+          {isLoading ? (
+            <div className="d-flex flex-column justify-content-center align-items-center my-5 py-5">
+              <Spinner animation="border" variant="success" />
+              <h5 className="mt-3 text-success">Loading Categories...</h5>
+            </div>
+          ) : categories.length > 0 ? (
+            <Table responsive hover className="text-center custom-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Creation Date</th>
+                  <th>Modification Date</th>
+                  <th>Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          <NoData />
-        )}
+              </thead>
+
+              <tbody>
+                {categories.map((category, index) => (
+                  <tr key={category?.id}>
+                    <td>{category?.id}</td>
+                    <td>{category?.name}</td>
+                    <td>
+                      {new Date(category?.creationDate).toLocaleDateString()}
+                    </td>
+                    <td>
+                      {new Date(
+                        category?.modificationDate,
+                      ).toLocaleDateString()}
+                    </td>
+                    <td>
+                      {["start"].map((direction) => (
+                        <DropdownButton
+                          as={ButtonGroup}
+                          key={direction}
+                          id={`dropdown-button-drop-${direction}`}
+                          drop={direction}
+                          variant="transperant"
+                          className="fs-1 fw-bold"
+                          title={`...`}
+                        >
+                          <Dropdown.Item onClick={() => handleEdit(category)}>
+                            <i className="fa-regular fa-pen-to-square text-success cursor-pointer mx-1"></i>
+                            Edit
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleShow(category)}>
+                            <i className="fa-regular fa-trash-can text-success cursor-pointer mx-1"></i>
+                            Delete
+                          </Dropdown.Item>
+                        </DropdownButton>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <NoData />
+          )}
+        </div>
       </div>
     </>
   );

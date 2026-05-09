@@ -1,5 +1,5 @@
-import api from '../axsiosClient'
+import api from "../axsiosClient";
 
 export const getAllTags = () => {
-    return api.get("/tag");
-}
+  return api.get("/tag");
+};

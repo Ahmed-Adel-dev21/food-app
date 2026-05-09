@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import api from "../../../../../src/api/axsiosClient";
-import { authApi } from "../../../../api";
-
+import { ForgetPassss } from "../../../../api/modules/auth";
+import { toast } from "react-toastify";
 export default function ForgetPass() {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,13 +16,14 @@ export default function ForgetPass() {
     reset,
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data) => { 
     setIsLoading(true);
     try {
-      const response = await authApi.ForgetPass(data);
+      const response = await ForgetPassss(data);
       navigate("/reset-pass");
     } catch (error) {
-      console.log(error);
+        toast.error(error.response?.data?.message || "Something went wrong");
+
     } finally {
       setIsLoading(false);
     }
